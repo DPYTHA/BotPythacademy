@@ -1,4 +1,11 @@
 {
+  "name": "pythacademyBot",
+  "version": "1.0.0",
+  "description": "Site statique PythAcademy",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve ."
+  },
   "dependencies": {
     "dotenv": "^17.4.2"
   }

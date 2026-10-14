@@ -1,0 +1,550 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Contrat numérique de prestation de services AM-Cooporation">
+  <title>Contrat numérique | AM-Cooporation</title>
+
+  <style>
+    :root {
+      --primary: #123b5d;
+      --accent: #c49a46;
+      --bg: #f3f6fa;
+      --text: #253448;
+      --border: #dce3eb;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+    }
+
+    .header {
+      background: var(--primary);
+      color: white;
+      padding: 30px 18px;
+      text-align: center;
+      border-bottom: 4px solid var(--accent);
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 29px;
+      letter-spacing: 1px;
+    }
+
+    .header p { margin: 8px 0 0; }
+
+    .container {
+      max-width: 900px;
+      margin: 32px auto;
+      padding: 0 16px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 28px;
+      margin-bottom: 22px;
+      box-shadow: 0 4px 18px rgba(20, 40, 60, .06);
+      border: 1px solid var(--border);
+    }
+
+    h2 {
+      color: var(--primary);
+      font-size: 21px;
+      margin-top: 0;
+    }
+
+    h3 {
+      color: var(--primary);
+      font-size: 17px;
+      margin-bottom: 5px;
+    }
+
+    .notice {
+      padding: 14px 16px;
+      background: #fff8e9;
+      border-left: 4px solid var(--accent);
+      border-radius: 4px;
+      margin: 18px 0;
+    }
+
+    label {
+      display: block;
+      margin: 14px 0 6px;
+      font-weight: 600;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 7px;
+      font: inherit;
+      background: white;
+    }
+
+    input:focus, textarea:focus {
+      outline: 2px solid #9bbbd5;
+      border-color: var(--primary);
+    }
+
+    .check-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin: 18px 0;
+      font-weight: normal;
+    }
+
+    .check-row input {
+      margin-top: 6px;
+      flex-shrink: 0;
+    }
+
+    .signature-box {
+      border: 2px dashed #aab8c8;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    #signatureCanvas {
+      width: 100%;
+      height: 180px;
+      display: block;
+      touch-action: none;
+      cursor: crosshair;
+    }
+
+    .signature-help {
+      font-size: 13px;
+      color: #64748b;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 7px;
+      padding: 13px 18px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .primary-btn {
+      background: var(--primary);
+      color: white;
+    }
+
+    .secondary-btn {
+      background: #e8edf3;
+      color: var(--text);
+    }
+
+    button:hover { opacity: .9; }
+
+    #result {
+      display: none;
+      padding: 18px;
+      margin-top: 20px;
+      background: #eaf7ee;
+      border: 1px solid #a8d7b5;
+      border-radius: 8px;
+      overflow-wrap: anywhere;
+    }
+
+    .footer {
+      text-align: center;
+      color: #64748b;
+      font-size: 13px;
+      padding: 10px 18px 30px;
+    }
+
+    @media (max-width: 600px) {
+      .card { padding: 19px; }
+      .header h1 { font-size: 24px; }
+      .actions button { width: 100%; }
+    }
+
+    @media print {
+      body { background: white; }
+      .header { print-color-adjust: exact; }
+      .container { margin: 0 auto; }
+      .card { box-shadow: none; break-inside: avoid; }
+      .no-print, #result { display: none !important; }
+      .footer { padding-bottom: 0; }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="header">
+    <h1>AM-Cooporation</h1>
+    <p>Accompagnement et suivi des procédures d'immigration</p>
+    <p>CONTRAT NUMÉRIQUE DE PRESTATION DE SERVICES</p>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h2>Informations du client</h2>
+      <p>Veuillez compléter les informations ci-dessous avant de lire et signer le contrat.</p>
+
+      <form id="contractForm">
+        <label for="fullName">Nom complet *</label>
+        <input id="fullName" name="fullName" type="text"
+               autocomplete="name" required>
+
+        <label for="email">Adresse e-mail *</label>
+        <input id="email" name="email" type="email"
+               autocomplete="email" required>
+
+        <label for="phone">Téléphone</label>
+        <input id="phone" name="phone" type="tel"
+               autocomplete="tel">
+
+        <label for="country">Pays de résidence *</label>
+        <input id="country" name="country" type="text" required>
+
+        <label for="service">Service ou procédure concernée *</label>
+        <textarea id="service" name="service" rows="3"
+                  placeholder="Ex. : accompagnement pour une candidature universitaire"
+                  required></textarea>
+      </form>
+    </section>
+
+    <section class="card" id="contract">
+      <h2>Conditions générales du contrat</h2>
+
+      <p>
+        Le présent contrat définit les conditions de collaboration entre
+        <strong>AM-Cooporation</strong>, ci-après dénommée « la Structure »,
+        et le client dont les informations figurent dans le formulaire.
+      </p>
+
+      <div class="notice">
+        <strong>Important :</strong> le client est invité à lire attentivement
+        toutes les clauses avant de donner son accord. Sa signature confirme
+        son acceptation des conditions applicables à la prestation convenue.
+      </div>
+
+      <h3>Article 1 — Objet du contrat</h3>
+      <p>
+        AM-Cooporation propose un service d'accompagnement, de suivi et
+        d'assistance administrative dans le cadre des procédures d'immigration,
+        des démarches d'études à l'étranger et des candidatures convenues
+        avec le client.
+      </p>
+      <p>
+        La nature exacte du service, son périmètre et les frais correspondants
+        doivent être précisés au client avant le commencement de la prestation.
+      </p>
+
+      <h3>Article 2 — Collaboration internationale</h3>
+      <p>
+        Le client reconnaît qu'AM-Cooporation collabore avec plusieurs
+        administrateurs et partenaires situés dans différents pays afin
+        de faciliter le suivi et le traitement administratif des dossiers.
+      </p>
+      <p>
+        Lorsque cela est nécessaire, certaines informations peuvent être
+        communiquées aux intervenants concernés, dans la mesure nécessaire
+        à la prestation et sous réserve des règles applicables en matière
+        de confidentialité et de protection des données personnelles.
+      </p>
+
+      <h3>Article 3 — Paiement des frais de services</h3>
+      <p>
+        Les frais correspondant à une prestation sont perçus avant le début
+        de l'étape de la procédure concernée. Le client doit être informé
+        du montant, de la nature des frais et de l'étape couverte avant
+        tout paiement.
+      </p>
+      <p>
+        Le règlement des frais de services ne garantit ni l'obtention d'un
+        visa, ni une admission universitaire, ni l'acceptation d'une demande
+        par une autorité ou un établissement tiers.
+      </p>
+
+      <h3>Article 4 — Politique de remboursement des services</h3>
+      <p>
+        Les frais correspondant aux services effectivement rendus par
+        AM-Cooporation ne sont pas remboursables, sous réserve des droits
+        impératifs du client prévus par la législation applicable.
+      </p>
+      <p>
+        Avant le début d'une prestation, le client est informé du service
+        prévu et des frais applicables. Tout cas d'annulation, de prestation
+        non commencée ou partiellement exécutée est traité conformément
+        au contrat convenu et aux dispositions légales applicables.
+      </p>
+
+      <h3>Article 5 — Frais de scolarité universitaire</h3>
+      <p>
+        Les frais de scolarité versés à une université ou à un établissement
+        d'enseignement sont distincts des frais de services d'AM-Cooporation.
+      </p>
+      <p>
+        Tout remboursement des frais de scolarité relève des règlements,
+        conditions d'admission et politiques de remboursement de l'université
+        ou de l'établissement concerné. Le client est invité à consulter
+        ces règles avant tout paiement.
+      </p>
+      <p>
+        AM-Cooporation ne peut pas garantir un remboursement décidé par
+        un établissement tiers et ne peut engager celui-ci au-delà de ses
+        propres obligations.
+      </p>
+
+      <h3>Article 6 — Obligations du client</h3>
+      <p>Le client s'engage à :</p>
+      <ul>
+        <li>Fournir des informations exactes, complètes et à jour ;</li>
+        <li>Transmettre les documents nécessaires dans les délais convenus ;</li>
+        <li>Vérifier les informations et documents avant leur transmission ;</li>
+        <li>Régler les frais convenus selon les modalités communiquées ;</li>
+        <li>Respecter les exigences des autorités et établissements concernés.</li>
+      </ul>
+
+      <h3>Article 7 — Obligations et limites de la Structure</h3>
+      <p>
+        AM-Cooporation s'engage à fournir les prestations convenues avec
+        diligence et à communiquer au client les informations utiles
+        concernant le suivi de son dossier.
+      </p>
+      <p>
+        Les décisions relatives aux visas, permis, admissions et autres
+        autorisations relèvent des autorités ou établissements compétents.
+        Aucun résultat favorable ne peut être garanti.
+      </p>
+
+      <h3>Article 8 — Protection des données personnelles</h3>
+      <p>
+        Les données du client sont utilisées pour la gestion de son dossier,
+        le suivi de la prestation et les communications nécessaires.
+        Leur conservation, leur sécurité et leur éventuel transfert à des
+        partenaires doivent respecter la législation applicable.
+      </p>
+      <p>
+        Le client peut contacter AM-Cooporation pour obtenir des informations
+        sur ses données et exercer les droits qui lui sont reconnus par
+        la législation applicable.
+      </p>
+
+      <h3>Article 9 — Acceptation et entrée en vigueur</h3>
+      <p>
+        Le contrat prend effet selon les modalités convenues entre les
+        parties et sous réserve des exigences légales applicables.
+        La procédure du client ne commence qu'après validation des
+        conditions préalables convenues, notamment la confirmation du
+        service et le règlement requis pour l'étape concernée.
+      </p>
+
+      <h3>Article 10 — Droit applicable et règlement des différends</h3>
+      <p>
+        Le droit applicable et les modalités de règlement des différends
+        doivent être précisés en fonction du pays d'établissement
+        d'AM-Cooporation, du lieu de prestation et des règles impératives
+        applicables au client.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Acceptation et signature électronique</h2>
+
+      <p>
+        En signant ci-dessous, vous confirmez avoir lu les clauses du contrat,
+        compris les conditions relatives aux frais de services et aux frais
+        universitaires, et accepté les conditions applicables à votre prestation.
+      </p>
+
+      <label class="check-row">
+        <input type="checkbox" id="acceptTerms" required>
+        <span>
+          J'ai lu et compris le contrat ci-dessus. J'accepte ses conditions
+          et souhaite le signer électroniquement. *
+        </span>
+      </label>
+
+      <label for="signatureCanvas">Votre signature manuscrite *</label>
+      <div class="signature-box no-print">
+        <canvas id="signatureCanvas"
+                aria-label="Zone de signature manuscrite"
+                role="img"></canvas>
+      </div>
+      <p class="signature-help no-print">
+        Dessinez votre signature avec votre doigt, votre souris ou un stylet.
+      </p>
+
+      <div class="actions no-print">
+        <button type="button" class="secondary-btn" id="clearSignature">
+          Effacer la signature
+        </button>
+        <button type="button" class="secondary-btn" id="printContract">
+          Imprimer / Enregistrer en PDF
+        </button>
+        <button type="button" class="primary-btn" id="signContract">
+          Valider ma signature
+        </button>
+      </div>
+
+      <div id="result" role="status" aria-live="polite"></div>
+      <p class="signature-help">
+        * Champs et acceptation obligatoires. La validation sur cette page
+        ne constitue pas, à elle seule, une preuve de conservation sécurisée
+        du contrat signé.
+      </p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    AM-Cooporation — Contrat numérique de prestation de services
+  </footer>
+
+  <script>
+    const canvas = document.getElementById("signatureCanvas");
+    const ctx = canvas.getContext("2d");
+    const form = document.getElementById("contractForm");
+    const result = document.getElementById("result");
+
+    let drawing = false;
+    let hasSignature = false;
+    let lastPoint = null;
+
+    function resizeCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      if (!rect.width || !rect.height) return;
+
+      // Préserve la signature lors d'un redimensionnement.
+      const previous = hasSignature ? canvas.toDataURL() : null;
+      const ratio = window.devicePixelRatio || 1;
+
+      canvas.width = Math.round(rect.width * ratio);
+      canvas.height = Math.round(rect.height * ratio);
+
+      ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+      ctx.lineWidth = 2.4;
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+      ctx.strokeStyle = "#123b5d";
+
+      if (previous) {
+        const img = new Image();
+        img.onload = () => {
+          ctx.drawImage(img, 0, 0, rect.width, rect.height);
+        };
+        img.src = previous;
+      }
+    }
+
+    function getPoint(event) {
+      const rect = canvas.getBoundingClientRect();
+      return {
+        x: event.clientX - rect.left,
+        y: event.clientY - rect.top
+      };
+    }
+
+    canvas.addEventListener("pointerdown", (event) => {
+      event.preventDefault();
+      drawing = true;
+      lastPoint = getPoint(event);
+      hasSignature = true;
+      canvas.setPointerCapture(event.pointerId);
+
+      ctx.beginPath();
+      ctx.moveTo(lastPoint.x, lastPoint.y);
+      ctx.lineTo(lastPoint.x + 0.1, lastPoint.y + 0.1);
+      ctx.stroke();
+    });
+
+    canvas.addEventListener("pointermove", (event) => {
+      if (!drawing) return;
+      event.preventDefault();
+
+      const point = getPoint(event);
+      ctx.beginPath();
+      ctx.moveTo(lastPoint.x, lastPoint.y);
+      ctx.lineTo(point.x, point.y);
+      ctx.stroke();
+      lastPoint = point;
+    });
+
+    function stopDrawing() {
+      drawing = false;
+      lastPoint = null;
+    }
+
+    canvas.addEventListener("pointerup", stopDrawing);
+    canvas.addEventListener("pointercancel", stopDrawing);
+    canvas.addEventListener("lostpointercapture", stopDrawing);
+
+    document.getElementById("clearSignature").addEventListener("click", () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      hasSignature = false;
+    });
+
+    document.getElementById("printContract").addEventListener("click", () => {
+      window.print();
+    });
+
+    document.getElementById("signContract").addEventListener("click", () => {
+      if (!form.reportValidity()) return;
+
+      if (!document.getElementById("acceptTerms").checked) {
+        alert("Veuillez accepter les conditions du contrat.");
+        return;
+      }
+
+      if (!hasSignature) {
+        alert("Veuillez apposer votre signature avant de continuer.");
+        return;
+      }
+
+      const clientName = document.getElementById("fullName").value.trim();
+      const clientEmail = document.getElementById("email").value.trim();
+      const signedAt = new Date().toLocaleString("fr-FR");
+
+      result.style.display = "block";
+      result.replaceChildren();
+
+      const heading = document.createElement("strong");
+      heading.textContent = "Informations de signature recueillies";
+
+      const details = document.createElement("p");
+      details.textContent =
+        "Client : " + clientName +
+        " | E-mail : " + clientEmail +
+        " | Date et heure locales : " + signedAt;
+
+      const warning = document.createElement("p");
+      warning.textContent =
+        "Démo : aucune copie signée n'a été envoyée ni enregistrée sur un serveur. " +
+        "Imprimez le contrat en PDF si vous souhaitez en conserver une copie.";
+
+      result.append(heading, details, warning);
+      result.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
+  </script>
+</body>
+</html>
